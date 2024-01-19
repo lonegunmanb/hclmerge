@@ -1,0 +1,31 @@
+name: build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 #v4.1.1
+    - name: Set up Go
+      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 #v5.0.0
+      with:
+        go-version: 1.21
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@e5f05b81d5b6ff8cfa111c80c22c5fd02a384118 #v3.23.0
+      with:
+        languages: go
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@e5f05b81d5b6ff8cfa111c80c22c5fd02a384118 #v3.23.0
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@e5f05b81d5b6ff8cfa111c80c22c5fd02a384118 #v3.23.0
+    - name: Run tests
+      run: go test github.com/lonegunmanb/hclmerge/...
