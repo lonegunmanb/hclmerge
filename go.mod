@@ -1,6 +1,6 @@
 module github.com/lonegunmanb/hclmerge
 
-go 1.21.6
+go 1.21.3
 
 require (
 	github.com/ahmetb/go-linq/v3 v3.2.0
