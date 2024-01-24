@@ -22,10 +22,9 @@ func main() {
 
 	rootCmd.Flags().StringVarP(&file1, "file1", "1", "", "config file 1 (required)")
 	rootCmd.Flags().StringVarP(&file2, "file2", "2", "", "config file 2 (required)")
-	rootCmd.Flags().StringVarP(&destFile, "dest", "d", "", "file to save merged content (required)")
+	rootCmd.Flags().StringVarP(&destFile, "dest", "d", "", "file to save merged content (optional)")
 	_ = rootCmd.MarkFlagRequired("file1")
 	_ = rootCmd.MarkFlagRequired("file2")
-	_ = rootCmd.MarkFlagRequired("dest")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)

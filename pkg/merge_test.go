@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/prashantv/gostub"
 	"github.com/spf13/afero"
+	"io"
+	"os"
 	"strings"
 	"testing"
 
@@ -220,4 +222,36 @@ func TestMergeFile(t *testing.T) {
 			assert.Contains(t, string(mergedContent), `instance_type = "t2.micro"`)
 		})
 	}
+}
+
+func TestMergeFile_EmptyDestFileShouldPrintMergedFile(t *testing.T) {
+	// Create a new in-memory file system
+	fs := afero.NewMemMapFs()
+
+	// Create and write to source and destination files
+	_ = afero.WriteFile(fs, "/src.hcl", []byte(`resource "aws_instance" "example" {
+        ami = "ami-abc123"
+    }`), 0644)
+	_ = afero.WriteFile(fs, "/dest.hcl", []byte(`resource "aws_instance" "example" {
+        instance_type = "t2.micro"
+    }`), 0644)
+	stub := gostub.Stub(&pkg.Fs, fs)
+	defer stub.Reset()
+
+	r, w, _ := os.Pipe()
+	stub.Stub(&os.Stdout, w)
+
+	// Call the MergeFile function
+	err := pkg.MergeFile("/src.hcl", "/dest.hcl", "")
+	require.NoError(t, err)
+
+	// Close the writer and restore stdout
+	w.Close()
+
+	// Read the buffer which has stdout
+	out, _ := io.ReadAll(r)
+
+	// Check the content of the stdout
+	assert.Contains(t, string(out), `ami           = "ami-abc123"`)
+	assert.Contains(t, string(out), `instance_type = "t2.micro"`)
 }
