@@ -78,7 +78,7 @@ func MergeFile(file1, file2, destFile string) error {
 	MergeFiles(hclFile2, hclFile1)
 
 	if destFile == "" {
-		fmt.Printf(string(hclFile2.Bytes()))
+		fmt.Print(string(hclFile2.Bytes()))
 		return nil
 	}
 
