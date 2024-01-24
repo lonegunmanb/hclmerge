@@ -77,6 +77,11 @@ func MergeFile(file1, file2, destFile string) error {
 
 	MergeFiles(hclFile2, hclFile1)
 
+	if destFile == "" {
+		fmt.Printf(string(hclFile2.Bytes()))
+		return nil
+	}
+
 	err = afero.WriteFile(Fs, destFile, hclFile2.Bytes(), 0644)
 	if err != nil {
 		return fmt.Errorf("error writing destination file %s: %+v", destFile, err)
