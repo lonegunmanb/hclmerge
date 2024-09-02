@@ -4,7 +4,7 @@ go 1.21.3
 
 require (
 	github.com/ahmetb/go-linq/v3 v3.2.0
-	github.com/hashicorp/hcl/v2 v2.21.0
+	github.com/hashicorp/hcl/v2 v2.22.0
 	github.com/prashantv/gostub v1.1.0
 	github.com/spf13/afero v1.11.0
 	github.com/spf13/cobra v1.8.1
