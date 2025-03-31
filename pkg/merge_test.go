@@ -246,7 +246,8 @@ func TestMergeFile_EmptyDestFileShouldPrintMergedFile(t *testing.T) {
 	require.NoError(t, err)
 
 	// Close the writer and restore stdout
-	w.Close()
+	err = w.Close()
+	require.NoError(t, err)
 
 	// Read the buffer which has stdout
 	out, _ := io.ReadAll(r)
